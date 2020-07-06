@@ -30,9 +30,7 @@ class UploadFile extends Component {
           }
         );
       } catch (error) {
-        console.log(error.response);
         alert("It seems we had some issue, please try again!");
-        console.log({ error });
       }
     });
   };
@@ -62,7 +60,7 @@ class UploadFile extends Component {
             multiple
             type="file"
             ref={(ref) => (this.inputEl = ref)}
-            style={{ opacity: 1, position: "absolute", zIndex: -1 }}
+            style={{ opacity: 0, position: "absolute", zIndex: -1 }}
             onChange={(e) => {
               this.setState({ filesSelected: this.inputEl.files.length });
             }}
