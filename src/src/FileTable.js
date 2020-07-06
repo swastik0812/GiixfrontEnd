@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -28,29 +28,41 @@ const rows = [
 
 export default function SimpleTable() {
   const classes = useStyles();
+  const [data, setData] = useState([]);
 
+  const getData = async () => {
+    try {
+      const data = await fetch("http://localhost:3003/files").then((re) =>
+        re.json()
+      );
+      setData(data);
+      console.log(data);
+    } catch (error) {
+      alert("Could not fetch data");
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+  console.log(data);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Custom name</TableCell>
-            <TableCell align="right">Size</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Date</TableCell>
+            <TableCell>File name</TableCell>
+            <TableCell align="center">File Path</TableCell>
+            <TableCell align="right">UploadOn</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {data.map((data, index) => (
+            <TableRow key={data.index}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {data.FileName}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{data.path}</TableCell>
+              <TableCell align="right">{data.uploadedOn}</TableCell>
             </TableRow>
           ))}
         </TableBody>

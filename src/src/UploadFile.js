@@ -3,6 +3,8 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
+import { object } from "prop-types";
 
 class UploadFile extends Component {
   constructor(props) {
@@ -12,7 +14,28 @@ class UploadFile extends Component {
       filesSelected: 0,
     };
   }
-
+  uploadingFiles = (data) => {
+    Object.keys(data).forEach(async (files) => {
+      const requestFormData = new FormData();
+      requestFormData.append("uploads", data[files]);
+      try {
+        const apiResponse = await axios.post(
+          "http://localhost:3003/",
+          requestFormData,
+          {
+            headers: {
+              // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error.response);
+        alert("It seems we had some issue, please try again!");
+        console.log({ error });
+      }
+    });
+  };
   onButtonClick = () => {
     // `current` points to the mounted file input element
     this.inputEl.click();
@@ -39,7 +62,7 @@ class UploadFile extends Component {
             multiple
             type="file"
             ref={(ref) => (this.inputEl = ref)}
-            style={{ opacity: 0, position: "absolute", zIndex: -1 }}
+            style={{ opacity: 1, position: "absolute", zIndex: -1 }}
             onChange={(e) => {
               this.setState({ filesSelected: this.inputEl.files.length });
             }}
@@ -70,6 +93,7 @@ class UploadFile extends Component {
           variant="contained"
           color="primary"
           onClick={() => {
+            this.uploadingFiles(this.inputEl.files);
             console.log("FILES ARE: ", this.inputEl.files);
           }}
         >
