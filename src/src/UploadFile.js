@@ -19,16 +19,15 @@ class UploadFile extends Component {
       const requestFormData = new FormData();
       requestFormData.append("uploads", data[files]);
       try {
-        const apiResponse = await axios.post(
-          "http://localhost:3003/",
-          requestFormData,
-          {
-            headers: {
-              // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        axios.post("http://localhost:3003/", requestFormData, {
+          headers: {
+            // "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(this.state.filesSelected);
+        this.setState({ filesSelected: 0 });
+        this.props.updateFile();
       } catch (error) {
         alert("It seems we had some issue, please try again!");
       }

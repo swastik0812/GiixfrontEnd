@@ -27,7 +27,7 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function SimpleTable() {
+export default function SimpleTable(props) {
   let valueForUpdate = "";
   const inputEl = null;
   const classes = useStyles();
@@ -40,11 +40,21 @@ export default function SimpleTable() {
       const data = await fetch("http://localhost:3003/files").then((re) =>
         re.json()
       );
+      console.log(data);
       setData(data);
+      console.log("complete");
+      props.stopUpdating();
     } catch (error) {
       alert("Could not fetch data");
     }
   };
+  console.log(props.stopUpdate);
+  console.log(props.updateAgain);
+
+  if (props.updateAgain && !props.stopUpdate) {
+    console.log("hello");
+    getData();
+  }
 
   useEffect(() => {
     getData();
@@ -63,6 +73,7 @@ export default function SimpleTable() {
     Axios.post("http://localhost:3003/updateName", Data)
       .then((response) => {
         setID(0);
+        getData();
         valueForUpdate = "";
       })
       .catch((e) => {
@@ -105,7 +116,7 @@ export default function SimpleTable() {
   if (ID !== 0) {
     Hide = { opacity: 0, position: "absolute", zIndex: -1 };
   }
-
+  console.log(ID);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
