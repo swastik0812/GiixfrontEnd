@@ -9,7 +9,15 @@ import * as ERRORS from "./store/const";
 import { object } from "prop-types";
 
 class UploadFile extends Component {
+  constructor(props) {
+    super(props);
+    this.inputEl = null;
+  }
+
   uploadingFiles = async (data) => {
+    // this.inputEl.value = null;
+    console.log(this.inputEl.value);
+    console.log(data);
     let cut = false;
     Object.keys(data).forEach(async (files) => {
       const requestFormData = new FormData();
@@ -25,14 +33,18 @@ class UploadFile extends Component {
             this.props.updateFileSelected(0);
           })
           .catch((err) => {
+            console.log(cut);
             !cut ? alert(ERRORS.Error.error_2) : null;
             cut = true;
             this.props.updateFileSelected(0);
+            this.inputEl.value = null;
           });
       } catch (error) {
         alert(ERRORS.Error.error_3);
+        this.inputEl.value = null;
       }
     });
+    this.inputEl.value = null;
   };
   onButtonClick = () => {
     this.inputEl.click();
