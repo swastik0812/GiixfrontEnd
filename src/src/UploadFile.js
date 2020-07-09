@@ -25,9 +25,9 @@ class UploadFile extends Component {
           })
           .catch((err) => {
             alert(ERRORS.Error.error_2);
+            this.props.updateFileSelected(0);
           });
       } catch (error) {
-        console.log(error);
         alert(ERRORS.Error.error_3);
       }
     });
