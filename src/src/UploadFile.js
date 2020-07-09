@@ -10,6 +10,7 @@ import { object } from "prop-types";
 
 class UploadFile extends Component {
   uploadingFiles = async (data) => {
+    let cut = false;
     Object.keys(data).forEach(async (files) => {
       const requestFormData = new FormData();
       requestFormData.append("uploads", data[files]);
@@ -24,7 +25,8 @@ class UploadFile extends Component {
             this.props.updateFileSelected(0);
           })
           .catch((err) => {
-            alert(ERRORS.Error.error_2);
+            !cut ? alert(ERRORS.Error.error_2) : null;
+            cut = true;
             this.props.updateFileSelected(0);
           });
       } catch (error) {
