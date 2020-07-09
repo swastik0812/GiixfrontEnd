@@ -5,8 +5,6 @@ import UploadFile from "./UploadFile";
 
 class Main extends Component {
   state = {
-    fileUpdateAgain: false,
-    stopUpdate: false,
     fileSelected: 0,
   };
   updateFileSelected = (data) => {
