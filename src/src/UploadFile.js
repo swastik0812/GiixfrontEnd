@@ -15,9 +15,6 @@ class UploadFile extends Component {
   }
 
   uploadingFiles = async (data) => {
-    // this.inputEl.value = null;
-    console.log(this.inputEl.value);
-    console.log(data);
     let cut = false;
     Object.keys(data).forEach(async (files) => {
       const requestFormData = new FormData();
@@ -33,7 +30,6 @@ class UploadFile extends Component {
             this.props.updateFileSelected(0);
           })
           .catch((err) => {
-            console.log(cut);
             !cut ? alert(ERRORS.Error.error_2) : null;
             cut = true;
             this.props.updateFileSelected(0);
